@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<a href="{{url_for('disponibilidade')}}">⬅️ Voltar</a>
+<h1>Nova Reserva</h1>
+<h3>Preencha os dados para confirmar o agendamento</h3>
+
+
+{% for card in teste %}
+
+
+      
+
+{% endfor %}  
+
+<select >
+    <option>Selecionar Espaço</option>
+    <option value="">Lab. Ciências</option>
+    <option value="">Auditório</option>
+    <option value="">Sala de Vídeo</option>
+    <option value="">Sala de Reunião</option>
+</select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h2>Disponibilidade</h2>
+    <p>Veja os horários disponíveis dos espaços.</p>
+
+    <form action="{{url_for('disponibilidade')}}">
+    <input type="date" name="data" value="">
+    
+
+    <select name="tipo">
+        <option value="">Todos os espaços</option>
+        <option value="Lab. Informática 2">Lab. Informática 2</option>
+        <option value="Lab. Ciências">Lab. Ciências</option>
+        <option value="Sala 104">Sala 104</option>
+        <option value="Auditório">Auditório</option>
+    </select> <br>
+
+    <button type="submit">Buscar</button>
+    </form>
+
+    <div>
+        <span>Livre</span>
+        <span>Ocupado</span>
+        <span>Minha reserva</span>
+    </div>
+
+
+    <table>
+        <thead>
+            <tr>
+                <th>ESPAÇO</th>
+                <th>07H-08H30</th>
+                <th>08H30-10H</th>
+                <th>10H-11H30</th>
+                <th>11H30-13H</th>
+                <th>13H-14H30</th>
+                <th>14H30-16H</th>
+                <th>16H-17H30</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            
+            {% for espaco in dados %}
+
+                    <tr>
+                        <td>{{ espaco['sala']}}</td>
+                        <td>{{ espaco['7_830']}}</td>
+                        <td>{{ espaco['830_10']}}</td>
+                        <td>{{ espaco['10_1130']}}</td>
+                        <td>{{ espaco['1130_13']}}</td>
+                        <td>{{ espaco['13_1430']}}</td>
+                        <td>{{ espaco['1430_16']}}</td>
+                        <td>{{ espaco['16_1730']}}</td>
+                    </tr>
+            
+            {% endfor %}
+        </tbody>
+    </table>
+            
+{% endblock %}

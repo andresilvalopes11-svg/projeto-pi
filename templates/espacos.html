@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="conteudo">
+
+    <h2>Espaços Disponiveis</h2>
+
+    <p>Salas e laboratórios da instituição</p>
+
+    <div class="filtros">
+
+    <form action="{{ url_for('espacos')}}">
+
+        <input type="text" name="busca" placeholder="🔍Buscar espaço...">
+
+        <select name="tipo">
+            <option value="">Todos os tipos</option>
+            <option value="Laboratório">Laboratório</option>
+            <option value="Sala de aula">Sala de aula</option>
+            <option value="Auditório">Auditório</option>
+            <option value="Multimídia">Multimídia</option>
+            <option value="Reunião">Reunião</option>
+
+        </select>
+
+        <button type="submit">Buscar</button>
+
+    </form>
+
+    </div>
+
+    <div class="cards">
+
+    {% for espaco in espacos %}
+    
+    <div class="card">
+
+        <div class="icone">
+            {{espaco.icone}}
+        </div>
+
+        <div class="card-conteudo">
+
+        <h3>{{ espaco.nome }}</h3>
+        <p>{{ espaco.tipo}} - {{espaco.capacidade}} lugares</p>
+        
+        </div>
+
+        <p class="bloco">Bloco {{espaco.bloco}}</p>
+
+
+    </div>
+
+
+    {% endfor %}
+
+    </div>
+</div>
+
+{% endblock %}
