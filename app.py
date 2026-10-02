@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
 from datetime import date
 
@@ -104,61 +104,53 @@ def disponibilidade():
 
     return render_template("disponibilidade.html", dados = disponibilidade_horarios)
 
-@app.route("/fazer_reserva")
+@app.route("/fazer_reserva" , methods =['GET', 'POST'])
 def fazerReserva():
+    espaco = request.form.get('espaco')
+    data = request.form.get('data')
+    hinicio = request.form.get('hinicio')
+    hfim = request.form.get('hfim')
 
+    if not espaco or not data or not hinicio or not hfim:
+        return render_template("fazer_reserva.html", erro = "Informe todos os dados para a reserva!")
+    
     conn = conexao()
-    
-    
+    reservas = conn.execute('''SELECT hora_inicio, hora_fim FROM reserva 
+        WHERE id_espaco = ? AND data = ?''',  (espaco, data)).fetchall()
 
-    return render_template("/fazer_reserva.html", teste = espacos)
-
-
-
+    possuiConflito = False
+    for reserva in reservas:
 
 
+        if hinicio > reserva['hora_inicio'] and hfim < reserva['hora_fim']:
+            possuiConflito = True
 
+        elif hinicio == reserva['hora_inicio'] and hfim == reserva['hora_fim']:
+            possuiConflito = True
+            
+        elif hinicio < reserva['hora_inicio'] and hfim > reserva['hora_fim']:
+            possuiConflito = True
+            
+        elif hinicio > reserva['hora_inicio'] and hinicio < reserva['hora_fim']:
+            possuiConflito = True
+            
+        elif hfim < reserva['hora_fim'] and hfim > reserva['hora_inicio']:
+            possuiConflito = True
+            
+        
+        if possuiConflito:
+            break
 
+    if possuiConflito:
+        conn.close()
+        return render_template("fazer_reserva.html", erro = "Horário indisponível para este espaço")
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    else:
+        conn.execute('''INSERT INTO reserva (data, hora_inicio, hora_fim, id_espaco)
+                VALUES(?, ?, ?, ?)''', (data, hinicio, hfim, espaco))
+        conn.commit()
+        conn.close()
+        return render_template("fazer_reserva.html", success = "Horário cadastrado com sucesso")
 
 
 

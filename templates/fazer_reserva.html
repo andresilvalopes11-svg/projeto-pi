@@ -2,34 +2,67 @@
 
 {% block content %}
 
-
-<a href="{{url_for('disponibilidade')}}">⬅️ Voltar</a>
 <h1>Nova Reserva</h1>
 <h3>Preencha os dados para confirmar o agendamento</h3>
 
 
-{% for card in teste %}
+<form action="{{ url_for('fazerReserva')}}" method="POST">
 
+    <label for="espaco">Espaço</label>
 
-      
+    <br>
 
-{% endfor %}  
+    <select name="espaco" id="espaco">
+        <option>Selecionar Espaço</option>
+        <option value="1" selected>Lab. Infromática 2</option>
+        <option value="2">Lab. Ciências</option>
+        <option value="3">Sala 104</option>
+        <option value="4">Auditório</option>
+        <option value="5">Sala de Vídeo</option>
+        <option value="6">Sala de Reunião</option>
+    </select>
+    <br> <br>
+    <fieldset>
+        <legend>Data e Horário</legend>
 
-<select >
-    <option>Selecionar Espaço</option>
-    <option value="">Lab. Ciências</option>
-    <option value="">Auditório</option>
-    <option value="">Sala de Vídeo</option>
-    <option value="">Sala de Reunião</option>
-</select>
+        <label for="data">Data</label>
+        <input type="date" name="data" id="data" value="2026-09-23">
 
+        <label for="hinicio">Início</label>
+        <input type="time" name="hinicio" id="hinicio">
 
+        <label for="hfim">Fim</label>
+        <input type="time" name="hfim" id="hfim">
+    </fieldset>
 
+    {% if erro %}
+    <p>{{ erro }}</p>
+    {% endif %}
 
+    {% if success %}
+    <p>{{ success }}</p>
+    {% endif %}
 
+    <br> <br>
 
+    <!-- <fieldset>
+        <legend>Informações Adicionais</legend>
 
+        <label for="finalidade">Finalidade</label>
+        <input type="text" name="finalidade" id="finalidade">
 
+        <label for="turma">Turma / Grupo</label>
+        <input type="text" name="turma" id="turma">
+
+        <label for="observacao">Observações (Opcional) </label>
+        <textarea placeholder="Necessidades especiais, equipamentos..." id="observacao" name="observacao" ></textarea> -->
+
+    </fieldset>
+    <br>
+    <a href="{{url_for('disponibilidade')}}">Cancelar</a>
+    <button type="submit">Confirmar reserva</button>
+
+</form>
 
 
 
