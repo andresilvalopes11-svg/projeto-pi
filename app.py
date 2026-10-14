@@ -1,13 +1,19 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 import sqlite3
 from datetime import date
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 app = Flask(__name__)
 
+app.secret_key = 'chave-de-teste'
+
 
 @app.route("/")
 def index():
+
+    if 'usuario_id' not in session:
+        return redirect(url_for('login'))
     return render_template("index.html")
 
 
@@ -146,11 +152,85 @@ def fazerReserva():
         return render_template("fazer_reserva.html", erro = "Horário indisponível para este espaço")
 
     else:
-        conn.execute('''INSERT INTO reserva (data, hora_inicio, hora_fim, id_espaco)
-                VALUES(?, ?, ?, ?)''', (data, hinicio, hfim, espaco))
+        conn.execute('''INSERT INTO reserva (data, hora_inicio, hora_fim, id_espaco, id_usuario)
+                VALUES(?, ?, ?, ?, ?)''', (data, hinicio, hfim, espaco, session['usuario_id']))
         conn.commit()
         conn.close()
         return render_template("fazer_reserva.html", success = "Horário cadastrado com sucesso")
+
+
+
+@app.route("/minhas_reservas")
+def minhasReservas():
+
+    if 'usuario_id' not in session:
+        return redirect(url_for('login'))
+
+    conn = conexao()
+    reservas = conn.execute('SELECT reserva.*, espaco.nome FROM reserva JOIN espaco ON espaco.id = reserva.id_espaco WHERE reserva.id_usuario = ?', 
+                            (session['usuario_id'], ))
+    reservas = reservas.fetchall()
+    conn.close()
+
+
+
+    return render_template("minhas_reservas.html", reservas=reservas)
+    
+
+
+
+@app.route("/login", methods = ['GET', 'POST'])
+def login():
+
+
+    if request.method == 'POST':
+
+        conn = conexao()
+
+        email = request.form.get("email")
+        senha = request.form.get("senha")
+
+        validar = conn.execute('SELECT * from usuario WHERE email = ?', (email, ))
+
+        usuario = validar.fetchone()
+
+        if usuario:
+            if check_password_hash(usuario['senha'], senha):
+                session['usuario_id'] = usuario['id']
+                conn.close()
+                return redirect(url_for('index'))
+
+            else:
+                print('SENHA INCORRETA')
+        else:
+            print('E-MAIL NÃO CADASTRADO!')
+
+        
+        
+    return render_template("login.html")
+
+@app.route('cadastrar_usuario')
+def cadastrarUsuario():
+    return render_template('cadastrar_usuario.html')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

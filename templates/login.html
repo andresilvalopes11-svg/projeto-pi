@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Login | SpaceHub </title>
+</head>
+<body>
+    <main class="login-container">
+
+        <h1>SpaceHub</h1>
+        <p>Entre para acessar o sistema</p>
+
+        <form action="{{url_for('login')}}", method="POST">
+
+            <label for="email">E-mail</label>
+            <input type="email"  name="email" id="email" 
+            placeholder="Digite seu e-mail" value="admin@spacehub.local"required>
+
+            <label for="senha">Senha</label>
+            <input type="password"  name="senha"  id="senha" 
+            placeholder="Digite sua senha"  value="Admin123!" required>
+
+            <button type="submit">Entrar</button>
+
+        </form>
+
+    </main>
+</body>
+</html>

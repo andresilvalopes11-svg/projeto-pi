@@ -16,7 +16,7 @@ VALUES ('Lab. Informática 2', 'Laboratório', 30, 'B', '💻'),
        ('Auditório', 'Auditório', 120, 'Principal', '🎤'),
        ('Sala de Vídeo', 'Multimídia', 40, 'B', '🎬'),
        ('Sala de Reunião', 'Reunião', 12, 'A', '👥');
-*/
+
 
 
 CREATE TABLE reserva (
@@ -31,4 +31,14 @@ CREATE TABLE reserva (
 INSERT INTO reserva (data, hora_inicio, hora_fim, id_espaco)
 VALUES ('2026-09-23', '08:30', '10:00', 1),
        ('2026-07-14', '11:30', '13:00', 2);
+
+*/
+
+CREATE TABLE usuario (
+    id integer PRIMARY KEY AUTOINCREMENT,
+    nome varchar(100) NOT NULL,
+    email varchar(100) UNIQUE NOT NULL,
+    senha varchar(255) NOT NULL,
+    tipo varchar(20) NOT NULL
+);
 
