@@ -209,9 +209,68 @@ def login():
         
     return render_template("login.html")
 
-@app.route('cadastrar_usuario')
+@app.route("/cadastrar_usuario", methods=['GET', 'POST'])
 def cadastrarUsuario():
+
+    if 'usuario_id' not in session:
+        return redirect(url_for('login'))
+    
+    else:    
+        conn = conexao()
+        id_logado = conn.execute('SELECT * FROM usuario WHERE usuario.id = ?', (session['usuario_id'], )).fetchone()
+        
+        if id_logado['tipo'] == 'admin':
+
+            if request.method == 'POST':
+                nome = request.form.get('nome')
+                email = request.form.get('email')
+                senha = request.form.get('senha')
+                tipo = request.form.get('tipo')
+
+                if nome and email and senha and tipo:
+                    senha = generate_password_hash(senha)
+                    conn.execute('''INSERT INTO usuario (nome, email, senha, tipo) 
+                    VALUES (?, ?, ?, ?)''', (nome, email, senha, tipo))
+
+                    conn.commit()     
+        else:
+            conn.close()
+            return redirect(url_for('index'))
+         
+        conn.close()
+            
     return render_template('cadastrar_usuario.html')
+
+
+@app.route("/editar_usuario/<int:id>", methods = ['GET', 'POST'])
+def editarUsuario(id):
+    conn = conexao()
+    usuario = conn.execute('SELECT * FROM usuario WHERE id =?', (id,)).fetchone()
+    if request.method == 'POST':
+        nome_usuario = request.form.get('nome')
+        email = request.form.get('email')
+        senha = request.form.get('senha')
+        tipo = request.form.get('tipo')
+
+        if senha:
+
+            senha = generate_password_hash(senha)
+            conn.execute('''UPDATE usuario SET nome =?, email =?, senha=?, tipo =? WHERE id =?''' , 
+                        (nome_usuario, email, senha, tipo, id))
+            conn.commit()
+            conn.close()
+
+        else: 
+            conn.execute('''UPDATE usuario SET nome =?, email =?,tipo =? WHERE id =?''' , 
+            (nome_usuario, email, tipo, id))
+            conn.commit()
+            conn.close()
+
+    
+    return render_template('editar_usuario.html', usuario = usuario)
+
+    
+
 
 
 

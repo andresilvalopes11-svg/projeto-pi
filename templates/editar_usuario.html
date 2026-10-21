@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Editar usuário</h1>
+
+<form method="POST">
+
+    <label>Nome:</label>
+    <input type="text" name="nome" value="{{ usuario.nome }}" required>
+
+    <label>Email:</label>
+    <input type="email" name="email" value="{{ usuario.email }}" required>
+
+    <label>Nova senha:</label>
+    <input type="password" name="senha" placeholder="Digite uma nova senha">
+
+    <label>Tipo de usuário:</label>
+    <select name="tipo" required>
+        <option value="usuario" {% if usuario.tipo == 'usuario' %}selected{% endif %}>Usuário</option>
+        <option value="admin" {% if usuario.tipo == 'admin' %}selected{% endif %}>Administrador</option>
+    </select>
+
+    <button type="submit">Salvar alterações</button>
+
+</form>
+
+{% endblock %}
