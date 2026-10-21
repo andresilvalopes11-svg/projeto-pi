@@ -1,23 +1,51 @@
-    {% extends 'base.html' %}
+{% extends 'base.html' %}
 
+{% block content %}
 
-    {% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/minhas_reservas.css') }}">
 
-    <h1>Minhas Reservas</h1>
-    <p>Aqui estão as suas reservas de espaços.</p>
+<div class="reservas-container">
 
-    <div>
-    {% for reserva in reservas  %}
+    <h1>Minhas reservas</h1>
+    <p class="subtitulo">Confira os espaços e horários que você reservou.</p>
 
+    {% if reservas %}
 
-    <p>ESPAÇO: {{reserva.nome}}</p>
-    <p>ID: {{reserva.id}}</p>
-    <P>DATA: {{reserva.data}}</P>
-    <p>Inicio: {{reserva.hora_inicio}}</p>
-    <p>FIM: {{reserva.hora_fim}}</p>
-    
+        <div class="reservas-lista">
 
-    {% endfor %}
-    </div>
-                
-    {% endblock %}
+            {% for reserva in reservas %}
+
+                <div class="reserva-card">
+
+                    <h2>{{ reserva.nome }}</h2>
+
+                    <p>
+                        <strong>Data:</strong>
+                        {{ reserva.data }}
+                    </p>
+
+                    <p>
+                        <strong>Horário:</strong>
+                        {{ reserva.hora_inicio }} às {{ reserva.hora_fim }}
+                    </p>
+
+                    <!-- Os botões serão adicionados depois. -->
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="sem-reservas">
+            <h2>Nenhuma reserva encontrada</h2>
+            <p>Quando você reservar um espaço, ele aparecerá aqui.</p>
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,23 @@
+    {% extends 'base.html' %}
+
+
+    {% block content %}
+
+    <h1>Minhas Reservas</h1>
+    <p>Aqui estão as suas reservas de espaços.</p>
+
+    <div>
+    {% for reserva in reservas  %}
+
+
+    <p>ESPAÇO: {{reserva.nome}}</p>
+    <p>ID: {{reserva.id}}</p>
+    <P>DATA: {{reserva.data}}</P>
+    <p>Inicio: {{reserva.hora_inicio}}</p>
+    <p>FIM: {{reserva.hora_fim}}</p>
+    
+
+    {% endfor %}
+    </div>
+                
+    {% endblock %}

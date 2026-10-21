@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h3 style="background-color: rgb(198, 197, 197);">
+  Excluir Usuário
+</h3>
+
+<div class="container">
+
+
+    <p>Tem certeza que deseja excluir este usuário?</p>
+
+    <p>Nome: {{ usuario.nome }}</p>
+    <p>Email: {{ usuario.email }}</p>
+
+    <form method="POST">
+
+        <button type="submit" class="btn btn-danger my-2">
+            Confirmar Exclusão
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

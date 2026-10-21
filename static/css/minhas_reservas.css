@@ -1,0 +1,128 @@
+
+.reservas-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.reservas-container h1 {
+    color: #1e293b;
+    font-size: 30px;
+    margin-bottom: 8px;
+}
+
+.subtitulo {
+    color: #64748b;
+    margin-bottom: 30px;
+}
+
+.reservas-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.reserva-card {
+    display: grid;
+    grid-template-columns: 6px 1fr;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(15, 23, 42, 0.04);
+}
+
+.reserva-card::before {
+    content: "";
+    background: #4f46e5;
+    grid-row: 1;
+}
+
+.reserva-card h2 {
+    color: #1e293b;
+    font-size: 19px;
+    margin: 0 0 16px;
+}
+
+.reserva-card p {
+    margin: 0;
+    color: #64748b;
+}
+
+.reserva-card p strong {
+    color: #334155;
+}
+
+.reserva-card h2,
+.reserva-card p {
+    grid-column: 2;
+}
+
+.reserva-card {
+    padding: 20px;
+    column-gap: 16px;
+}
+
+.reserva-card h2 {
+    margin-top: 2px;
+}
+
+.reserva-card p + p {
+    margin-top: 10px;
+}
+
+.sem-reservas {
+    padding: 45px 20px;
+    text-align: center;
+    background: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    border-radius: 12px;
+}
+
+.sem-reservas h2 {
+    color: #334155;
+}
+
+.sem-reservas p {
+    color: #64748b;
+}
+
+@media (max-width: 600px) {
+    .reservas-container {
+        margin: 25px auto;
+        padding: 0 14px;
+    }
+}
+
+.reserva-botoes {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.reserva-botoes button {
+    padding: 9px 16px;
+    border: none;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-editar {
+    background-color: #e0e7ff;
+    color: #3730a3;
+}
+
+.btn-editar:hover {
+    background-color: #c7d2fe;
+}
+
+.btn-cancelar {
+    background-color: #fee2e2;
+    color: #b91c1c;
+}
+
+.btn-cancelar:hover {
+    background-color: #fecaca;
+}

@@ -231,8 +231,8 @@ def cadastrarUsuario():
                     senha = generate_password_hash(senha)
                     conn.execute('''INSERT INTO usuario (nome, email, senha, tipo) 
                     VALUES (?, ?, ?, ?)''', (nome, email, senha, tipo))
-
-                    conn.commit()     
+                    conn.commit()
+                    return redirect(url_for('listarUsuario'))   
         else:
             conn.close()
             return redirect(url_for('index'))
@@ -245,6 +245,15 @@ def cadastrarUsuario():
 @app.route("/editar_usuario/<int:id>", methods = ['GET', 'POST'])
 def editarUsuario(id):
     conn = conexao()
+    if 'usuario_id' not in session:
+        return redirect(url_for('login'))
+
+    id_logado = conn.execute('SELECT * FROM usuario WHERE id = ?', (session['usuario_id'],)).fetchone()
+
+    if id_logado['tipo'] != 'admin':
+        conn.close()
+        return redirect(url_for('login'))    
+
     usuario = conn.execute('SELECT * FROM usuario WHERE id =?', (id,)).fetchone()
     if request.method == 'POST':
         nome_usuario = request.form.get('nome')
@@ -259,18 +268,45 @@ def editarUsuario(id):
                         (nome_usuario, email, senha, tipo, id))
             conn.commit()
             conn.close()
+            return redirect(url_for('listarUsuario'))
 
         else: 
             conn.execute('''UPDATE usuario SET nome =?, email =?,tipo =? WHERE id =?''' , 
             (nome_usuario, email, tipo, id))
             conn.commit()
             conn.close()
+            return redirect(url_for('listarUsuario'))
 
     
     return render_template('editar_usuario.html', usuario = usuario)
 
+@app.route("/excluir_usuario/<int:id>", methods = ['POST', 'GET'])
+def excluirUsuario(id):
     
+    if 'usuario_id' not in session:
+        return redirect(url_for('login'))
 
+    conn = conexao()
+    id_logado = conn.execute('SELECT * FROM usuario WHERE id = ?', (session['usuario_id'],)).fetchone()
+
+    if id_logado['tipo'] != 'admin':
+        conn.close()
+        return redirect(url_for('login'))
+
+    usuario = conn.execute('SELECT * FROM usuario WHERE id=?', (id, )).fetchone()
+    if request.method == 'POST':
+        conn.execute('DELETE FROM usuario WHERE id=?', (id, ))
+        conn.commit()
+        conn.close()
+        return redirect(url_for('listarUsuario'))
+
+    return render_template('excluir_usuario.html', usuario = usuario)
+
+@app.route("/listar_usuario")
+def listarUsuario():
+    conn = conexao()
+    usuario = conn.execute('SELECT * FROM usuario')
+    return render_template('listar_usuario.html', usuario = usuario)
 
 
 
